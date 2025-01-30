@@ -24,7 +24,7 @@ import com.ispan.chufa.service.CouponService;
 @RequestMapping("/api/coupons")
 public class ControllerRouter {
 
-    private static final String UPLOAD_DIR = "C:\\JavaFramework\\sts-workspace\\CouponKFC\\ispan_chufa\\proj-chufa\\src\\main\\resources\\static\\UploadImages";
+    private static final String UPLOAD_DIR = "C:\\JavaFramework\\sts-workspace\\CouponKFC\\proj-chufa\\src\\main\\resources\\static\\UploadImages";
 
     @Autowired
     private CouponService couponService;
@@ -129,13 +129,18 @@ public class ControllerRouter {
                 existingCoupon.setPicture("/UploadImages/" + originalFilename);
             }
 
+            
             // **只更新有變動的欄位**
             if (coupon.getTitle() != null) existingCoupon.setTitle(coupon.getTitle());
             if (coupon.getContent() != null) existingCoupon.setContent(coupon.getContent());
             if (coupon.getPrice() != null) existingCoupon.setPrice(coupon.getPrice());
             if (coupon.getStartTime() != null) existingCoupon.setStartTime(coupon.getStartTime());
             if (coupon.getEndTime() != null) existingCoupon.setEndTime(coupon.getEndTime());
-
+            LocalDateTime now = LocalDateTime.now();
+            if (existingCoupon.getStartTime() != null && existingCoupon.getEndTime() != null) {
+                boolean isValid = now.isAfter(existingCoupon.getStartTime()) && now.isBefore(existingCoupon.getEndTime());
+                existingCoupon.setState(isValid);
+            }
             // **更新餐點資訊**
             if (coupon.getFriedChicken() != null) existingCoupon.setFriedChicken(coupon.getFriedChicken());
             if (coupon.getEggTart() != null) existingCoupon.setEggTart(coupon.getEggTart());
@@ -208,7 +213,7 @@ public ResponseEntity<?> fetchAllImages() {
         List<CouponBean> coupons = couponService.getAllCoupons();
 
         // 獲取靜態目錄中所有圖片檔案
-        File directory = new File("C:/JavaFramework/sts-workspace/CouponKFC/ispan_chufa/proj-chufa/src/main/resources/static/UploadImages");
+        File directory = new File("C:/JavaFramework/sts-workspace/CouponKFC/proj-chufa/src/main/resources/static/UploadImages");
         if (!directory.exists() || !directory.isDirectory()) {
             return ResponseEntity.badRequest().body("圖片目錄不存在！");
         }
