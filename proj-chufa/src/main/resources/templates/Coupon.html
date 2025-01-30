@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>查詢</title>
+<script type="text/javascript">
+		function clearForm() {
+			var inputs = document.getElementsByTagName("input");
+			for (var i = 0; i < inputs.length; i++) {
+				if (inputs[i].type == "text") {
+					inputs[i].value = "";
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+<header>
+		<h1>優惠券後台</h1>
+	</header>
+	<nav>
+		<a href="/api/coupons/index">回到首頁</a>
+	</nav>
+	<div class="mid">
+	<form th:action="@{/api/coupons/Coupon}" method="post" enctype="multipart/form-data" >
+		<table style="background-color: #f4f4f9; width: 500px; margin: auto;">
+			<tr>
+				<td><input type="hidden" name="couponId" th:value="${couponId != null ? couponId : ' '}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}" th:text="${errors['couponId'] ?: ''}"></td>
+			</tr>
+			<tr>
+				<td>優惠卷代碼:</td>
+				<td><input type="text" name="couponCode"
+					th:value="${param['couponCode'] ?: ''}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}"
+					th:text="${errors['couponCode'] ?: ''}"></span></td>
+			</tr>
+			<tr>
+				<td>標題:</td>
+				<td><input type="text" name="title"
+					th:value="${param['title'] ?: ''}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}"
+					th:text="${errors['title'] ?: ''}"></span></td>
+			</tr>
+			<tr>
+				<td>副標題:</td>
+				<td><input type="text" name="subtitle" 
+				    th:value="${param['subtitle'] ?: ''}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}"
+					th:text="${errors['subtitle'] ?: ''}"></span></td>
+			</tr>
+			<tr>
+				<td>內容:</td>
+				<td><input type="text" name="content"
+					th:value="${param['content'] ?: ''}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}"
+					th:text="${errors['content'] ?: ''}"></span></td>
+			</tr>
+			<tr>
+				<td>網站:</td>
+				<td><input type="text" name="web"
+					th:value="${param['web'] ?: ''}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}"
+					th:text="${errors['web'] ?: ''}"></span></td>
+			</tr>
+			<tr>
+				<td>優惠卷圖片:</td>
+				<td><input type="file" name="picture"
+					th:value="${param['picture'] ?: ''}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}"
+					th:text="${errors['picture'] ?: ''}"></span></td>
+			</tr>
+			<tr>
+				<td>優惠卷開始:</td>
+				<td><input type="datetime-local" name="startTime" th:value="${param['startTime'] ?: ''}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}"
+					th:text="${errors['startTime'] ?: ''}"></span></td>
+			</tr>
+			<tr>
+				<td>優惠卷期限:</td>
+				<td><input type="datetime-local" name="endTime" th:value="${param['endTime'] ?: ''}" style="width: 50%"></td>
+				<td><span th:if="${errors != null}"
+					th:text="${errors['endTime'] ?: ''}"></span></td>
+			</tr>
+		</table>
+		<div class="CRUD">
+		<table>
+    <tr>
+        <td><input type="submit" name="playerModify" value="新增"></td>
+        <td><input type="submit" name="playerModify" value="修改"></td>
+        <td><input type="submit" name="playerModify" value="刪除"></td>
+        <td><input type="submit" name="query" value="查詢"></td>
+        <td><input type="button" value="清空" onclick="clearForm()"></td>
+    </tr>
+</table>
+
+		</div>
+	</form>
+	<div class="notification" 
+     th:if="${errors != null}" 
+     style="align-items: center; margin: 20px auto; background-color: white; max-width: 500px; padding: 10px; border-radius: 5px;">
+    <h3 th:text="${errors?.get('action') ?: ''}" style="margin: auto;"></h3>
+</div>
+
+	<div class="centered-list">
+		<ul>
+			<li>注意事項</li>
+		</ul>
+	</div>
+	</div>
+</body>
+</html>
