@@ -41,6 +41,12 @@ export default {
 </script>
 
 <style scoped>
+body {
+  background-color: #FBF8F6;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* 確保最少覆蓋整個畫面 */
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -51,7 +57,7 @@ header {
   margin: 0 auto 2rem;
 }
 
-nav {
+.nav {
   width: 100%;
   font-size: 12px;
   text-align: center;

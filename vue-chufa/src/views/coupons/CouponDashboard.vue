@@ -2,7 +2,6 @@
   <div class="dashboard">
     <h1>優惠券後台</h1>
     <CouponForm @refresh="fetchCoupons" />
-    
     <CouponTable :coupons="coupons" @edit="editCoupon" />
   </div>
 </template>
@@ -35,3 +34,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.dashboard{
+  align-items: center; /* 水平置中 */
+}
+
+</style>

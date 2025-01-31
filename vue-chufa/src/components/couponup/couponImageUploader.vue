@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <!-- 篩選按鈕 -->
     <button @click="toggleFriedChickenFilter" :class="['filter-btn', { 'active-btn': isFriedChickenActive }]">炸雞</button>
     <button @click="toggleFriesFilter" :class="['filter-btn', { 'active-btn': isFriesActive }]">薯條</button>
@@ -382,9 +382,16 @@ export default {
 </script>
 
 <style >
+.container {
+  margin-top: 20px; /* 或 margin-top: 40px; */
+  align-items: center; /* 水平置中 */
+  margin-left: 20px;
+  margin-right: 15px;
+}
+
 .passive-btn {
   background-color: blueviolet !important; /* ✅ 4. 啟動時變色 */
-  color: white !important;
+  color: white ;
   font-weight: bold;
 }
 
