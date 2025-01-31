@@ -22,14 +22,16 @@ export default {
 
 .coupon-upload-page {
   background-color: white;
-  margin-top: 40px; /* 或 margin-top: 40px; */
+  margin-top: 45px; /* 或 margin-top: 40px; */
   margin-left: 5px;
   margin-right: 5px;
   padding-top: 20px; /* 或 margin-top: 40px; */
   min-height: 100vh; /* 確保覆蓋整個畫面 */
-  align-items: center; /* 水平置中 */
+  
   min-width: 900px;
   margin-left: 15%;
+  border: 2px solid #E4002B;
+  border-radius: 8px;
 }
 .main-container {
   position: relative; /* 確保內部元素正確排列 */

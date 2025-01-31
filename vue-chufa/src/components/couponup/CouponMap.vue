@@ -10,6 +10,9 @@
           <span class="store-info">地址：桃園市蘆竹區大竹路428-1號</span></p>
       </div>
     </div>
+    <a href="https://www.kfcclub.com.tw/Coupon" target="_blank" class="action-button">
+          現在就行動
+        </a>
   </div>
   </template>
   
@@ -115,13 +118,13 @@
   border: 2px solid rgb(172, 172, 172);
   border-radius: 8px;
   z-index: 1000; /* 確保不會被其他內容蓋住 */
-  align-items: center; /* 水平置中 */
-  margin-left: 13%;
+  margin: auto; /* 讓表單在水平居中 */
 }
 .header {
   display: flex;
   justify-content: start;
   align-items: center;
+  
 }
 /* 📌 最近的肯德基（紅色 + 粗體） */
 .title {
@@ -144,8 +147,11 @@
   margin-left: 5px;
 }
 
-.map-btn:hover {
+.map-button:hover {
   background-color: #cc0000;
+}
+.map-button:active {
+  background-color: #f3a3a3;
 }
 /* 📌 店名 & 地址（紅色 + 加粗） */
 .store-info {
@@ -160,6 +166,31 @@
   justify-content: center;
   align-items: center;
   gap: 5px;
+}
+/* 📌 「現在就行動」按鈕 */
+.action-button {
+  background-color: #E4002B;
+  color: white;
+  font-size: 20px;
+  font-weight: 900;
+  font-family: 'Arial Black', 'Noto Sans TC', sans-serif;
+  padding: 18px 36px;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  justify-content: space-between;
+  transition: background 0.2s ease-in-out;
+  position: absolute;
+  right: -200px; /* ✅ 框框右側間距 */
+  top: -3px; /* ✅ 框框右側間距 */
+}
+
+.action-button:hover {
+  background-color: #cc0000;
+}
+.action-button:active {
+  background-color: #f3a3a3;
 }
   </style>
   

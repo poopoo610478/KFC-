@@ -36,7 +36,7 @@ export default {
 </script>
 <style scoped>
 .dashboard{
-  align-items: center; /* 水平置中 */
+  margin: auto; /* 讓表單在水平居中 */
 }
 
 </style>

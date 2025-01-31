@@ -112,7 +112,7 @@ export default {
     const showMealSection = ref(false); // 控制餐點區塊顯示
     const showrestaurant = ref(false); // 控制餐廳區塊顯示
     const couponStore = useCouponStore();
-    const coupons = ref([]);
+    const coupons = ref([]);// ✅ 存放查詢結果 (所有優惠券)
     const coupon = ref({
       couponId: 0, // 確保「查詢」後可以填入
       couponCode: "",
@@ -284,23 +284,40 @@ export default {
       }
     };
 
+    /** ✅ 查詢優惠券 (加入篩選邏輯) */
     const searchCoupons = async () => {
       try {
+        const query = {
+          title: coupon.value.title,
+          couponCode: coupon.value.couponCode, // ✅ 直接帶入篩選條件
+        };
+
         const response = await fetch("http://localhost:8080/api/coupons/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(coupon.value),
+          body: JSON.stringify(query),
         });
+
         if (!response.ok) {
           throw new Error("查詢失敗！");
         }
+
         const result = await response.json();
-        coupons.value = result.filter(coupon => coupon !== null && coupon !== undefined); // 更新查詢結果到表格
-        message.value = `查詢成功，共找到 ${result.length} 筆資料！`;
+        coupons.value = result.filter((c) => c !== null && c !== undefined);
+
+        // ✅ 當有輸入優惠券代碼時，僅保留符合的項目
+        if (coupon.value.couponCode) {
+          coupons.value = coupons.value.filter(
+            (c) => c.couponCode === coupon.value.couponCode
+          );
+        }
+
+        message.value = `查詢成功，共找到 ${coupons.value.length} 筆資料！`;
       } catch (error) {
         message.value = `錯誤：${error.message}`;
       }
     };
+    
 
     const clearForm = () => {
       coupon.value = {
@@ -352,18 +369,18 @@ export default {
       coupon.value.qqBall = selectedCoupon.qqBall || 0;
       coupon.value.chikenRice = selectedCoupon.chikenRice || 0;
       coupon.value.herbChiken = selectedCoupon.herbChiken || 0;
-      coupon.value.mexicoChiken = selectedCoupon.mexicoChiken || 0;
-      coupon.value.fishDonut = selectedCoupon.fishDonut || 0;
-      coupon.value.shrimpNugget = selectedCoupon.shrimpNugget || 0;
-      coupon.value.TaipeiFuhSingnan = selectedCoupon.TaipeiFuhSingnan ?? true;
-      coupon.value.TaipeiKuangfu = selectedCoupon.TaipeiKuangfu ?? true;
-      coupon.value.SinTiamAnkang = selectedCoupon.SinTiamAnkang ?? true;
-      coupon.value.SinTiambaLi = selectedCoupon.SinTiambaLi ?? true;
-      coupon.value.TaoyuanHighrail = selectedCoupon.TaoyuanHighrail ?? false;
-      coupon.value.Yilancarrefour = selectedCoupon.Yilancarrefour ?? true;
-      coupon.value.Yilanjiaoxi = selectedCoupon.Yilanjiaoxi ?? true;
-      coupon.value.TaichungFuhsing = selectedCoupon.TaichungFuhsing ?? true;
-      coupon.value.PingTungDonggang = selectedCoupon.PingTungDonggang ?? true;
+      coupon.value.MexicoChiken = selectedCoupon.mexicoChiken || 0;
+      coupon.value.FishDonut = selectedCoupon.fishDonut || 0;
+      coupon.value.ShrimpNugget = selectedCoupon.shrimpNugget || 0;
+      coupon.value.TaipeiFuhSingNan = selectedCoupon.TaipeiFuhSingnan ?? true;
+      coupon.value.TaipeiKuangFu = selectedCoupon.TaipeiKuangfu ?? true;
+      coupon.value.SinTiamAnKang = selectedCoupon.SinTiamAnkang ?? true;
+      coupon.value.SinTiamBaLi = selectedCoupon.SinTiambaLi ?? true;
+      coupon.value.TaoyuanHighRail = selectedCoupon.TaoyuanHighrail ?? false;
+      coupon.value.YilanCarrefour = selectedCoupon.Yilancarrefour ?? true;
+      coupon.value.YilanJiaoxi = selectedCoupon.Yilanjiaoxi ?? true;
+      coupon.value.TaichungFuhSing = selectedCoupon.TaichungFuhsing ?? true;
+      coupon.value.PingTungDongGang = selectedCoupon.PingTungDonggang ?? true;
       coupon.value.startTime = selectedCoupon.startTime || "";
       coupon.value.endTime = selectedCoupon.endTime || "";
       coupon.value.pictureUrl = selectedCoupon.picture ? `http://localhost:8080${selectedCoupon.picture}` : null; // 設置圖片URL

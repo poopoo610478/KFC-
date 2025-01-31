@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <!-- 篩選按鈕 -->
+
     <button @click="toggleFriedChickenFilter" :class="['filter-btn', { 'active-btn': isFriedChickenActive }]">炸雞</button>
     <button @click="toggleFriesFilter" :class="['filter-btn', { 'active-btn': isFriesActive }]">薯條</button>
     <button @click="toggleEggTartFilter" :class="['filter-btn', { 'active-btn': isEggTartActive }]">蛋撻</button>
@@ -49,6 +50,7 @@ export default {
   name: "CouponImageUploader",
   setup() {
     const couponStore = useCouponStore(); //重點2
+    
     
     const isFriedChickenPassive = ref(false);
     const isFriesPassive = ref(false);
@@ -106,15 +108,33 @@ export default {
 
 
     const filteredImages = ref([]);
-
-    const fetchImages = async () => {
-      await couponStore.fetchAllImages(); // 從後端獲取圖片列表
-      updateFilteredImages();
-    };
+    const now = new Date(); // 取得當前時間
+    
 
     const updateFilteredImages = () => {
       // 根據篩選條件更新圖片列表         //重點3
+      
+
       filteredImages.value = couponStore.images.filter(image => {
+        if (image.endTime) {
+      try {
+        // 1️⃣ 確保 `endTime` 是有效的日期
+        let endTimeStr = image.endTime.split('.')[0]; // 移除 `.123456` 微秒部分
+        let endTime = new Date(endTimeStr + "Z"); // 加上 `Z`，強制解析為 UTC
+
+        // 2️⃣ 修正時區誤差（確保比較的基準時間相同）
+        const localEndTime = new Date(endTime.getTime() + (new Date().getTimezoneOffset() * 60000));
+
+        // 3️⃣ 如果 `endTime` 已過期，則隱藏
+        if (!isNaN(localEndTime.getTime()) && localEndTime < now) {
+          return false;
+        }
+      } catch (error) {
+        console.error("日期解析錯誤:", image.endTime, error);
+      }
+    }
+
+
         if (hideFriedChickenZero.value && image.friedChicken === 0) {
           return false; // 隱藏炸雞數量為 0 的圖片
         }
@@ -154,45 +174,49 @@ export default {
         }
 
 
-        if (showOnlyNoFriedChicken.value) {
-          return image.friedChicken === 0; // 不要炸雞篩選條件
+        if (showOnlyNoFriedChicken.value && image.friedChicken !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoFries.value) {
-          return image.fries === 0; // 不要炸雞篩選條件
+        if (showOnlyNoFries.value && image.fries !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoEggTart.value) {
-          return image.eggTart === 0; // 不要炸雞篩選條件
+        if (showOnlyNoEggTart.value && image.eggTart !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoHamburger.value) {
-          return image.hamburger === 0; // 不要炸雞篩選條件
+        if (showOnlyNoHamburger.value && image.hamburger !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoChickenNuggets.value) {
-          return image.chickenNuggets === 0; // 不要炸雞篩選條件
+        if (showOnlyNoChickenNuggets.value && image.chickenNuggets !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoDrinks.value) {
-          return image.drinks === 0; // 不要炸雞篩選條件
+        if (showOnlyNoDrinks.value && image.drinks !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoQQBall.value) {
-          return image.QQBall === 0; // 不要炸雞篩選條件
+        if (showOnlyNoQQBall.value && image.QQBall !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoChikenRice.value) {
-          return image.chikenRice === 0; // 不要炸雞篩選條件
+        if (showOnlyNoChikenRice.value && image.chikenRice !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoHerbChiken.value) {
-          return image.herbChiken === 0; // 不要炸雞篩選條件
+        if (showOnlyNoHerbChiken.value && image.herbChiken !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoMexicoChiken.value) {
-          return image.MexicoChiken === 0; // 不要炸雞篩選條件
+        if (showOnlyNoMexicoChiken.value && image.MexicoChiken !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoFishDonut.value) {
-          return image.FishDonut === 0; // 不要炸雞篩選條件
+        if (showOnlyNoFishDonut.value && image.FishDonut !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
-        if (showOnlyNoShrimpNugget.value) {
-          return image.ShrimpNugget === 0; // 不要炸雞篩選條件
+        if (showOnlyNoShrimpNugget.value && image.ShrimpNugget !== 0) {
+          return false === 0; // 不要炸雞篩選條件
         }
 
         return true; // 顯示其他圖片
       });
+    };
+    const fetchImages = async () => {
+      await couponStore.fetchAllImages(); // 從後端獲取圖片列表
+      updateFilteredImages();
     };
 
     const toggleFriedChickenFilter = () => {    //重點4
@@ -319,7 +343,11 @@ export default {
       updateFilteredImages();
     };
 
-    onMounted(fetchImages);
+    // ✅ 當元件掛載時，執行一次 `fetchImages` 並每 30 秒自動檢查 `endTime`
+    onMounted(() => {
+      fetchImages();
+      setInterval(updateFilteredImages, 30000); // ✅ 每 30 秒檢查過期狀態
+    });
 
     return {
       filteredImages,
@@ -385,7 +413,7 @@ export default {
 .container {
   margin-top: 20px; /* 或 margin-top: 40px; */
   align-items: center; /* 水平置中 */
-  margin-left: 20px;
+  margin-left: 25px;
   margin-right: 15px;
 }
 
