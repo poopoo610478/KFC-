@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- 顯示當前時間 -->
     <!-- 篩選按鈕 -->
 
     <button @click="toggleFriedChickenFilter" :class="['filter-btn', { 'active-btn': isFriedChickenActive }]">炸雞</button>
@@ -28,7 +29,22 @@
    <button @click="toggleNoMexicoChikenFilter" :class="['exclude-btn', { 'passive-btn': isMexicoChikenPassive }]">不要雞腿捲</button>
    <button @click="toggleNoFishDonutFilter" :class="['exclude-btn', { 'passive-btn': isFishDonutPassive }]">不要鱈魚圈</button>
    <button @click="toggleNoShrimpNuggetFilter" :class="['exclude-btn', { 'passive-btn': isShrimpNuggetPassive }]">不要超蝦塊</button>
+   <!-- 排序選單 -->
+   <div class="sort-controls">
+      <label>排序依據：</label>
+      <select v-model="sortBy" @change="sortImages" class="sort-select">
+        <option value="price">價錢 </option>
+        <option value="endTime">期限 </option>
+      </select>
 
+      <label>排序方式：</label>
+      <select v-model="sortOrder" @change="sortImages" class="sort-select">
+        <option value="asc">升順 </option>
+        <option value="desc">降順 </option>
+      </select>
+    </div>
+<!-- ✅ 隱藏的按鈕 (每 30 秒自動點擊) -->
+<button ref="autoFilterBtn" @click="updateFilteredImages" style="display: none;"></button>
     <!-- 圖片顯示 -->
     <div v-if="filteredImages.length > 0" class="image-grid">
       <div v-for="(image, index) in filteredImages" :key="index" class="image-item">
@@ -108,31 +124,60 @@ export default {
 
 
     const filteredImages = ref([]);
-    const now = new Date(); // 取得當前時間
+    const autoFilterBtn = ref(null); // ✅ 隱藏按鈕的引用
+    const currentTime = ref(new Date()); // ✅ 當前時間
+
+    const sortBy = ref("price"); // 預設排序依據為價錢
+    const sortOrder = ref("desc"); // 預設排序方式為升順
     
+    const fetchImages = async () => {
+      await couponStore.fetchAllImages(); // 從後端獲取圖片列表
+      filteredImages.value = couponStore.images; // 初始載入所有圖片
+       updateFilteredImages();
+       sortImages();
+    };
+
+    const sortImages = () => {
+      filteredImages.value.sort((a, b) => {
+        let valA = a[sortBy.value];
+        let valB = b[sortBy.value];
+
+        if (sortBy.value === "endTime") {
+          valA = new Date(valA);
+          valB = new Date(valB);
+        }
+
+        if (sortOrder.value === "asc") {
+          return valA - valB;
+        } else {
+          return valB - valA;
+        }
+      });
+    };
+
+    // ✅ 轉換 MSSQL datetime2(6) 格式為 Date 物件
+    const parseMSSQLDateTime = (dateTimeStr) => {
+      if (!dateTimeStr) return null;
+      console.log(`📦 原始 EndTime: ${dateTimeStr}`); // ✅ 確認時間格式
+      return new Date(dateTimeStr);
+    };
 
     const updateFilteredImages = () => {
       // 根據篩選條件更新圖片列表         //重點3
-      
+      console.log("✅ updateFilteredImages 正在執行"); // 加入測試輸出
 
-      filteredImages.value = couponStore.images.filter(image => {
+      filteredImages.value = couponStore.images.filter((image) => {
         if (image.endTime) {
-      try {
-        // 1️⃣ 確保 `endTime` 是有效的日期
-        let endTimeStr = image.endTime.split('.')[0]; // 移除 `.123456` 微秒部分
-        let endTime = new Date(endTimeStr + "Z"); // 加上 `Z`，強制解析為 UTC
+          const endTime = parseMSSQLDateTime(image.endTime);
+          console.log(`🕒 圖片: ${image.filename}, EndTime: ${endTime}, Now: ${currentTime.value}`);
 
-        // 2️⃣ 修正時區誤差（確保比較的基準時間相同）
-        const localEndTime = new Date(endTime.getTime() + (new Date().getTimezoneOffset() * 60000));
-
-        // 3️⃣ 如果 `endTime` 已過期，則隱藏
-        if (!isNaN(localEndTime.getTime()) && localEndTime < now) {
-          return false;
+          if (endTime && endTime < currentTime.value) {
+            console.log(`❌ 圖片過期：${image.filename}`);
+            return false; // ✅ 隱藏過期圖片
+          }
+        } else {
+          console.warn(`⚠️ 圖片 ${image.filename} 沒有 endTime 資料`);
         }
-      } catch (error) {
-        console.error("日期解析錯誤:", image.endTime, error);
-      }
-    }
 
 
         if (hideFriedChickenZero.value && image.friedChicken === 0) {
@@ -214,10 +259,7 @@ export default {
         return true; // 顯示其他圖片
       });
     };
-    const fetchImages = async () => {
-      await couponStore.fetchAllImages(); // 從後端獲取圖片列表
-      updateFilteredImages();
-    };
+    
 
     const toggleFriedChickenFilter = () => {    //重點4
       hideFriedChickenZero.value = !hideFriedChickenZero.value;
@@ -343,14 +385,21 @@ export default {
       updateFilteredImages();
     };
 
-    // ✅ 當元件掛載時，執行一次 `fetchImages` 並每 30 秒自動檢查 `endTime`
-    onMounted(() => {
-      fetchImages();
-      setInterval(updateFilteredImages, 30000); // ✅ 每 30 秒檢查過期狀態
+    /** ✅ 初始化並設定 30 秒自動更新圖片 */
+    // ✅ 當頁面掛載時執行一次，並每 3 秒自動更新
+    onMounted(async () => {
+      await fetchImages(); // 先取得所有圖片
+      updateFilteredImages(); // 初次篩選
     });
-
     return {
       filteredImages,
+
+      autoFilterBtn,
+      updateFilteredImages,
+      currentTime,
+      sortBy,
+      sortOrder,
+      sortImages,
 
       isFriedChickenPassive,
       isFriesPassive,
@@ -453,9 +502,10 @@ button.exclude-btn{
   padding: 10px 20px;
   background-color: #a086cc; /* 淡紫色 */
   color: white;
-  border: none;
+  border: 1px solid #ddd;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .exclude-btn:hover {
@@ -468,14 +518,34 @@ button.filter-btn {
   padding: 10px 20px;
   background-color: #ff9800;
   color: white;
-  border: none;
+  border: 1px solid #ddd;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .filter-btn:hover{
   background-color: #4caf50;
 }
 
+.sort-select {
+  padding: 8px;
+  background-color: #E4002B; /* ✅ 設定指定顏色 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-family: 'Arial Black', 'Noto Sans TC', sans-serif;
+  max-width: 100px;
+  max-height: 34px;
+}
 
+.sort-select:hover {
+  background-color: #C30024; /* 深一點的紅色以增強互動效果 */
+}
+.sort-controls label,
+.sort-controls select option {
+  font-weight: bold; /* 讓文字變粗 */
+}
 </style>

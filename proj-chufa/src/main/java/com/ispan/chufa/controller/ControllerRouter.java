@@ -29,21 +29,6 @@ public class ControllerRouter {
     @Autowired
     private CouponService couponService;
 
-    // @GetMapping("/all")
-    // public ResponseEntity<?> getAllCoupons() {
-    //     List<CouponBean> coupons = couponService.getAllCoupons();
-    //     return ResponseEntity.ok(coupons);
-    // }
-
-    // @GetMapping("/id/{id}")
-    // public ResponseEntity<?> getCouponById(@PathVariable Long id) {
-    //     CouponBean coupon = couponService.selectById(id);
-    //     if (coupon == null) {
-    //         return ResponseEntity.status(404).body("找不到優惠券！");
-    //     }
-    //     return ResponseEntity.ok(coupon);
-    // }
-
 
     @PostMapping("/Coupon")
     @ResponseBody
@@ -264,7 +249,8 @@ public ResponseEntity<?> fetchAllImages() {
             imageDetails.put("MexicoChiken", matchingCoupon != null ? matchingCoupon.getMexicoChiken() : 0); // 新增薯條屬性
             imageDetails.put("FishDonut", matchingCoupon != null ? matchingCoupon.getFishDonut() : 0); // 新增薯條屬性
             imageDetails.put("ShrimpNugget", matchingCoupon != null ? matchingCoupon.getShrimpNugget() : 0); // 新增薯條屬性
-
+            imageDetails.put("endTime", matchingCoupon != null ? matchingCoupon.getEndTime() : null);
+            imageDetails.put("price", matchingCoupon != null ? matchingCoupon.getPrice() : null);
             return imageDetails;
         }).collect(Collectors.toList());
 
