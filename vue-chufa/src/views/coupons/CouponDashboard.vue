@@ -1,6 +1,5 @@
 <template>
   <div class="dashboard">
-    <h1>優惠券後台</h1>
     <CouponForm @refresh="fetchCoupons" />
     <CouponTable :coupons="coupons" @edit="editCoupon" />
   </div>
@@ -37,6 +36,7 @@ export default {
 <style scoped>
 .dashboard{
   margin: auto; /* 讓表單在水平居中 */
+  margin-left: 8%;
 }
 
 </style>

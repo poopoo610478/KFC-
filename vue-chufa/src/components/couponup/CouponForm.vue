@@ -114,7 +114,7 @@ export default {
     const couponStore = useCouponStore();
     const coupons = ref([]);// ✅ 存放查詢結果 (所有優惠券)
     const coupon = ref({
-      couponId: 0, // 確保「查詢」後可以填入
+      couponId: "", // 確保「查詢」後可以填入
       couponCode: "",
       title: "",
       content: "",
