@@ -15,6 +15,7 @@
     <button @click="toggleMexicoChikenFilter" :class="['filter-btn', { 'active-btn': isMexicoChikenActive }]">雞腿捲</button>
     <button @click="toggleFishDonutFilter" :class="['filter-btn', { 'active-btn': isFishDonutActive }]">鱈魚圈</button>
     <button @click="toggleShrimpNuggetFilter" :class="['filter-btn', { 'active-btn': isShrimpNuggetActive }]">超蝦塊</button>
+    <button @click="toggleBreakfastFilter" :class="['filter-btn', { 'active-btn': isBreakfastActive }]">吃早餐</button>
 <br>
     <!-- 第二排篩選按鈕 -->
    <button @click="toggleNoFriedChickenFilter" :class="['exclude-btn', { 'passive-btn': isFriedChickenPassive }]">不要炸雞</button>
@@ -29,12 +30,19 @@
    <button @click="toggleNoMexicoChikenFilter" :class="['exclude-btn', { 'passive-btn': isMexicoChikenPassive }]">不要雞腿捲</button>
    <button @click="toggleNoFishDonutFilter" :class="['exclude-btn', { 'passive-btn': isFishDonutPassive }]">不要鱈魚圈</button>
    <button @click="toggleNoShrimpNuggetFilter" :class="['exclude-btn', { 'passive-btn': isShrimpNuggetPassive }]">不要超蝦塊</button>
+   <button @click="toggleNoBreakfastFilter" :class="['exclude-btn', { 'passive-btn': isBreakfastPassive }]">排除早餐</button>
    <!-- 排序選單 -->
    <div class="sort-controls">
       <label>排序依據：</label>
       <select v-model="sortBy" @change="sortImages" class="sort-select">
         <option value="price">價錢 </option>
         <option value="endTime">期限 </option>
+        <option value="friedChicken">炸雞 </option>
+        <option value="fries">薯條 </option>
+        <option value="eggTart">蛋撻 </option>
+        <option value="hamburger">漢堡 </option>
+        <option value="chickenNuggets">雞塊 </option>
+        <option value="drinks">飲料 </option>
       </select>
 
       <label>排序方式：</label>
@@ -80,6 +88,7 @@ export default {
     const isMexicoChikenPassive = ref(false);
     const isFishDonutPassive = ref(false);
     const isShrimpNuggetPassive = ref(false);
+    const isBreakfastPassive = ref(false);
 
     const isFriedChickenActive = ref(false);
     const isFriesActive = ref(false);
@@ -93,6 +102,7 @@ export default {
     const isMexicoChikenActive = ref(false);
     const isFishDonutActive = ref(false);
     const isShrimpNuggetActive = ref(false);
+    const isBreakfastActive = ref(false);
 
 
     const hideFriedChickenZero = ref(false); // 是否隱藏 friedChicken == 0 的圖片
@@ -107,6 +117,7 @@ export default {
     const hideMexicoChikenZero = ref(false);
     const hideFishDonutZero = ref(false);
     const hideShrimpNuggetZero = ref(false);
+    const hideBreakfastZero = ref(false);
 
     const showOnlyNoFriedChicken = ref(false); // 不要炸雞按鈕邏輯
     const showOnlyNoFries = ref(false);
@@ -120,6 +131,7 @@ export default {
     const showOnlyNoMexicoChiken = ref(false);
     const showOnlyNoFishDonut = ref(false);
     const showOnlyNoShrimpNugget = ref(false);
+    const showOnlyNoBreakfast = ref(false);
 
 
 
@@ -128,7 +140,7 @@ export default {
     const currentTime = ref(new Date()); // ✅ 當前時間
 
     const sortBy = ref("price"); // 預設排序依據為價錢
-    const sortOrder = ref("desc"); // 預設排序方式為升順
+    const sortOrder = ref("desc"); // 預設排序方式為降順
     
     const fetchImages = async () => {
       await couponStore.fetchAllImages(); // 從後端獲取圖片列表
@@ -217,6 +229,9 @@ export default {
         if (hideShrimpNuggetZero.value && image.ShrimpNugget === 0) {
           return false; // 隱藏薯條數量為 0 的圖片
         }
+        if (hideBreakfastZero.value && image.breakfast === 0) {
+          return false; // 隱藏薯條數量為 0 的圖片
+        }
 
 
         if (showOnlyNoFriedChicken.value && image.friedChicken !== 0) {
@@ -253,6 +268,9 @@ export default {
           return false === 0; // 不要炸雞篩選條件
         }
         if (showOnlyNoShrimpNugget.value && image.ShrimpNugget !== 0) {
+          return false === 0; // 不要炸雞篩選條件
+        }
+        if (showOnlyNoBreakfast.value && image.breakfast !== 0) {
           return false === 0; // 不要炸雞篩選條件
         }
 
@@ -322,6 +340,11 @@ export default {
       isShrimpNuggetActive.value = !isShrimpNuggetActive.value;
       updateFilteredImages();
     };
+    const toggleBreakfastFilter = () => {
+      hideBreakfastZero.value = !hideBreakfastZero.value; // 切換薯條篩選條件
+      isBreakfastActive.value = !isBreakfastActive.value;
+      updateFilteredImages();
+    };
 
 
     const toggleNoFriedChickenFilter = () => {
@@ -384,7 +407,12 @@ export default {
       isShrimpNuggetPassive.value = !isShrimpNuggetPassive.value;
       updateFilteredImages();
     };
-
+    const toggleNoBreakfastFilter = () => {
+      showOnlyNoBreakfast.value = !showOnlyNoBreakfast.value;
+      isBreakfastPassive.value = !isBreakfastPassive.value;
+      updateFilteredImages();
+    };
+    
     /** ✅ 初始化並設定 30 秒自動更新圖片 */
     // ✅ 當頁面掛載時執行一次，並每 3 秒自動更新
     onMounted(async () => {
@@ -413,6 +441,7 @@ export default {
       isMexicoChikenPassive,
       isFishDonutPassive,
       isShrimpNuggetPassive,
+      isBreakfastPassive,
 
       isFriedChickenActive, // ✅ 3. 在模板中綁定狀態
       isFriesActive,
@@ -426,6 +455,7 @@ export default {
       isMexicoChikenActive,
       isFishDonutActive,
       isShrimpNuggetActive,
+      isBreakfastActive,
 
 
       toggleFriedChickenFilter,       //重點五
@@ -440,6 +470,7 @@ export default {
       toggleMexicoChikenFilter,
       toggleFishDonutFilter,
       toggleShrimpNuggetFilter,
+      toggleBreakfastFilter,
 
       toggleNoFriedChickenFilter, // 將新按鈕函數暴露到模板
       toggleNoFriesFilter,
@@ -453,6 +484,7 @@ export default {
       toggleNoMexicoChikenFilter,
       toggleNoFishDonutFilter,
       toggleNoShrimpNuggetFilter,
+      toggleNoBreakfastFilter,
     };
   },
 };

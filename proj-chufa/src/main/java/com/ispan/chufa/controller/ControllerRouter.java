@@ -249,6 +249,7 @@ public ResponseEntity<?> fetchAllImages() {
             imageDetails.put("MexicoChiken", matchingCoupon != null ? matchingCoupon.getMexicoChiken() : 0); // 新增薯條屬性
             imageDetails.put("FishDonut", matchingCoupon != null ? matchingCoupon.getFishDonut() : 0); // 新增薯條屬性
             imageDetails.put("ShrimpNugget", matchingCoupon != null ? matchingCoupon.getShrimpNugget() : 0); // 新增薯條屬性
+            imageDetails.put("breakfast", matchingCoupon != null ? matchingCoupon.getBreakfast() : 0);
             imageDetails.put("endTime", matchingCoupon != null ? matchingCoupon.getEndTime() : null);
             imageDetails.put("price", matchingCoupon != null ? matchingCoupon.getPrice() : null);
             return imageDetails;

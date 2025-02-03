@@ -81,6 +81,9 @@ public class CouponBean {
     @Column(name = "ShrimpNugget")
     private Integer ShrimpNugget;
 
+    @Column(name = "Breakfast")
+    private Integer breakfast;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "StartTime")
     private LocalDateTime startTime; // 開始時間 為localdatetime
@@ -268,6 +271,15 @@ public class CouponBean {
         this.MexicoChiken = MexicoChiken;
     }
 
+    
+    public Integer getFishDonut() {
+        return FishDonut;
+    }
+    
+    public void setFishDonut(Integer FishDonut) {
+        this.FishDonut = FishDonut;
+    }
+    
     public Integer getShrimpNugget() {
         return ShrimpNugget;
     }
@@ -276,14 +288,13 @@ public class CouponBean {
         this.ShrimpNugget = ShrimpNugget;
     }
 
-    public Integer getFishDonut() {
-        return FishDonut;
+    public Integer getBreakfast() {
+        return breakfast;
     }
 
-    public void setFishDonut(Integer FishDonut) {
-        this.FishDonut = FishDonut;
+    public void setBreakfast(Integer breakfast) {
+        this.breakfast = breakfast;
     }
-
 
 
     public LocalDateTime getStartTime() {

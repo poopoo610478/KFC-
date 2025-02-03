@@ -60,6 +60,8 @@
           <input v-model="coupon.FishDonut" type="number" />
           <label>超蝦塊:</label>
           <input v-model="coupon.ShrimpNugget" type="number" />
+          <label>早餐:</label>
+          <input v-model="coupon.breakfast" type="number" />
         </div>
       </div>
       <div class="restaurant">
@@ -135,6 +137,7 @@ export default {
       MexicoChiken:0,
       FishDonut:0,
       ShrimpNugget:0,
+      breakfast:0,
       TaipeiFuhSingNan: true, // 台北復興南，默認為 true
       TaipeiKuangFu: true, // 台北光復，默認為 true
       SinTiamAnKang: true, // 新店安康，默認為 true
@@ -177,6 +180,7 @@ export default {
       formData.append("MexicoChiken", coupon.value.MexicoChiken);
       formData.append("FishDonut", coupon.value.FishDonut);
       formData.append("ShrimpNugget", coupon.value.ShrimpNugget);
+      formData.append("breakfast", coupon.value.breakfast);
       formData.append("TaipeiFuhSingNan", coupon.value.TaipeiFuhSingNan);
       formData.append("TaipeiKuangFu", coupon.value.TaipeiKuangFu);
       formData.append("SinTiamAnKang", coupon.value.SinTiamAnKang);
@@ -230,6 +234,7 @@ export default {
       formData.append("MexicoChiken", coupon.value.MexicoChiken);
       formData.append("FishDonut", coupon.value.FishDonut);
       formData.append("ShrimpNugget", coupon.value.ShrimpNugget);
+      formData.append("breakfast", coupon.value.breakfast);
       formData.append("TaipeiFuhSingNan", coupon.value.TaipeiFuhSingNan);
       formData.append("TaipeiKuangFu", coupon.value.TaipeiKuangFu);
       formData.append("SinTiamAnKang", coupon.value.SinTiamAnKang);
@@ -341,6 +346,7 @@ export default {
         MexicoChiken:0,
         FishDonut:0,
         ShrimpNugget:0,
+        breakfast:0,
         TaipeiFuhSingNan: true, // 台北復興南，默認為 true
         TaipeiKuangFu: true, // 台北光復，默認為 true
         SinTiamAnKang: true, // 新店安康，默認為 true
@@ -372,6 +378,7 @@ export default {
       coupon.value.MexicoChiken = selectedCoupon.mexicoChiken || 0;
       coupon.value.FishDonut = selectedCoupon.fishDonut || 0;
       coupon.value.ShrimpNugget = selectedCoupon.shrimpNugget || 0;
+      coupon.value.breakfast = selectedCoupon.breakfast || 0;
       coupon.value.TaipeiFuhSingNan = selectedCoupon.TaipeiFuhSingnan ?? true;
       coupon.value.TaipeiKuangFu = selectedCoupon.TaipeiKuangfu ?? true;
       coupon.value.SinTiamAnKang = selectedCoupon.SinTiamAnkang ?? true;
