@@ -24,8 +24,8 @@ public class CouponBean {
     @Column(name = "coupon_code")
     private String couponCode; // 優惠券代碼，要求唯一且不能為空
 
-    @Column(name = "TimesOfUse")
-    private Integer TimesOfUse; // 庫存 為數字
+//    @Column(name = "TimesOfUse")
+//    private Integer TimesOfUse; // 庫存 為數字
     
     @Column(name = "remaining")
     private Integer remaining; // 庫存 為數字
@@ -143,13 +143,13 @@ public class CouponBean {
         this.couponCode = couponCode;
     }
 
-    public Integer getTimesOfUse() {
-        return TimesOfUse;
-    }
-
-    public void setTimesOfUse(Integer TimesOfUse) {
-        this.TimesOfUse = TimesOfUse;
-    }
+//    public Integer getTimesOfUse() {
+//        return TimesOfUse;
+//    }
+//
+//    public void setTimesOfUse(Integer TimesOfUse) {
+//        this.TimesOfUse = TimesOfUse;
+//    }
 
     public Integer getPrice() {
         return price;

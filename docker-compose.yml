@@ -7,11 +7,11 @@ services:
       SA_PASSWORD: "P@ssw0rd"
       ACCEPT_EULA: "Y"
     ports:
-      - "1433:1433"   # 映射本機的 1433 到容器內的 1433
+      - "1433:1433"
     networks:
       - kfc-network
     healthcheck:
-      test: ["CMD-SHELL", "sqlcmd -S localhost -U sa -P P@ssw0rd -Q 'SELECT 1'"]
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P P@ssw0rd -Q 'SELECT 1'"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,7 +26,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=P@ssw0rd
     depends_on:
       mssql:
-        condition: service_healthy
+        condition: service_healthy   # 等待 MSSQL 成功啟動後再啟動 kfc-app
     networks:
       - kfc-network
 

@@ -136,7 +136,7 @@ public class CouponService {
               CouponBean Coupon = new CouponBean();
 
            // 映射欄位值
-              Coupon.setTimesOfUse(safeParseInteger(getField(fields, fieldIndex.get("TimesOfUse"))));
+            //   Coupon.setTimesOfUse(safeParseInteger(getField(fields, fieldIndex.get("TimesOfUse"))));
               Coupon.setCouponCode(getField(fields, fieldIndex.get("couponCode")));
               Coupon.setTitle(getField(fields, fieldIndex.get("title")));
               Coupon.setContent(getField(fields, fieldIndex.get("content")));
