@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "P@ssw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"   # 映射本機的 1433 到容器內的 1433
+    networks:
+      - kfc-network
+    healthcheck:
+      test: ["CMD-SHELL", "sqlcmd -S localhost -U sa -P P@ssw0rd -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kfc-app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://mssql:1433;database=chufa;trustServerCertificate=true
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=P@ssw0rd
+    depends_on:
+      mssql:
+        condition: service_healthy
+    networks:
+      - kfc-network
+
+networks:
+  kfc-network:
+    driver: bridge
