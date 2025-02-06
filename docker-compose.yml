@@ -7,14 +7,18 @@ services:
       SA_PASSWORD: "P@ssw0rd"
       ACCEPT_EULA: "Y"
     ports:
-      - "1433:1433"
+      - "9433:1433"
     networks:
       - kfc-network
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P P@ssw0rd -Q 'SELECT 1'"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'P@ssw0rd' -Q 'SELECT 1' -C -N"]
       interval: 10s
       timeout: 5s
       retries: 5
+    kfc-app:
+     depends_on:
+      kfc-project_mssql_1:
+        condition: service_healthy
 
   kfc-app:
     build: .
@@ -26,10 +30,9 @@ services:
       - SPRING_DATASOURCE_PASSWORD=P@ssw0rd
     depends_on:
       mssql:
-        condition: service_healthy   # 等待 MSSQL 成功啟動後再啟動 kfc-app
+        condition: service_healthy
     networks:
       - kfc-network
 
 networks:
   kfc-network:
-    driver: bridge

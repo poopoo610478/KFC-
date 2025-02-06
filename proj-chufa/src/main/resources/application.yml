@@ -1,8 +1,8 @@
-#資料庫連線設定
+#資料庫連線設定  要換的時候localhost換mssql，再重新啟動spring 192.168.23.88 localhost
 spring:  
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://mssql:1433;database=chufa;trustServerCertificate=true
+    url: jdbc:sqlserver://192.168.23.88:1433;database=chufa;trustServerCertificate=true
     username: sa
     password: P@ssw0rd
   mvc:
@@ -43,3 +43,6 @@ spring:
 jwt:
   token:
     expire: 10
+server:
+  address: 0.0.0.0
+  port: 8080

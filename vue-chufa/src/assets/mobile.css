@@ -1,0 +1,14 @@
+@media (max-width: 768px) {
+    body {
+      background-color: black !important;  /* 測試用，背景應變黑色 */
+    }
+  
+    .filter-btn, .exclude-btn {
+      background-color: red !important;     /* 測試用，按鈕應變紅色 */
+    }
+  
+    img {
+      border: 5px solid yellow !important;  /* 測試用，圖片應出現黃色邊框 */
+    }
+  }
+  

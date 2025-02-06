@@ -197,7 +197,7 @@ export default {
       }
 
       try {
-        const response = await fetch("http://localhost:8080/api/coupons/Coupon", {
+        const response = await fetch("http://192.168.23.88:8080/api/coupons/Coupon", {
           method: "POST",
           body: formData,
         });
@@ -255,7 +255,7 @@ export default {
     // 確保 couponId 是 Long 類型
     const id = Number(coupon.value.couponId);
 
-    const response = await fetch(`http://localhost:8080/api/coupons/update/${id}`, {
+    const response = await fetch(`http://192.168.23.88:8080/api/coupons/update/${id}`, {
       method: "PUT",
       body: formData,
     });
@@ -276,7 +276,7 @@ export default {
         return;
       }
       try {
-        const response = await fetch(`http://localhost:8080/api/coupons/delete/${coupon.value.couponId}`, {
+        const response = await fetch(`http://192.168.23.88:8080/api/coupons/delete/${coupon.value.couponId}`, {
           method: "DELETE",
         });
         if (response.ok) {
@@ -297,7 +297,7 @@ export default {
           couponCode: coupon.value.couponCode, // ✅ 直接帶入篩選條件
         };
 
-        const response = await fetch("http://localhost:8080/api/coupons/search", {
+        const response = await fetch("http://192.168.23.88:8080/api/coupons/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(query),

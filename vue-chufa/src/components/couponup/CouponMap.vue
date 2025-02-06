@@ -1,32 +1,36 @@
 <template>
-    <div class="coupon-map-container">
+  <div class="coupon-map-container">
     <div class="info-box">
       <div class="header">
         <span class="title">最近的肯德基</span>
         <button class="map-button" @click="openGoogleMaps">地圖</button>
       </div>
       <div class="details">
-        <p v-if="nearestKfc"><span class="store-info">店名：{{ nearestKfc.name }}</span> | 
-          <span class="store-info">地址：{{ nearestKfc.address }}</span></p>
-          <p v-else>
-  無法取得最近的肯德基，請確認定位已開啟。
-</p>
+        <p v-if="nearestKfc">
+          <span class="store-info">店名：{{ nearestKfc.name }}</span> |
+          <span class="store-info">地址：{{ nearestKfc.address }}</span>
+        </p>
+        <p v-else>
+          無法取得最近的肯德基，請確認定位已開啟。
+        </p>
       </div>
     </div>
-    <a href="https://www.kfcclub.com.tw/Coupon" target="_blank" 
-   class="action-button" 
-   title="前往KFC官網~"> <!-- ✅ 加上 title 屬性 -->
-   現在就行動
-</a>
+    <a href="https://www.kfcclub.com.tw/Coupon" target="_blank" class="action-button" title="前往KFC官網~">
+      現在就行動
+    </a>
   </div>
-  </template>
-  
-  <script>
-  import { ref, onMounted } from "vue";
-  
-  // 📌 假資料：手動建立肯德基店家資訊
-  const kfcStores = [
-  { name: "基隆忠二餐廳（基隆港海洋廣場前）", address: "基隆市仁愛區忠二路13號" ,lat: 25.128321, lng: 121.739369},
+</template>
+
+<script>
+import { ref, onMounted } from "vue";
+
+export default {
+  setup() {
+    const userLocation = ref(null);
+    const nearestKfc = ref(null);
+
+    const kfcStores = [
+      { name: "基隆忠二餐廳（基隆港海洋廣場前）", address: "基隆市仁愛區忠二路13號" ,lat: 25.128321, lng: 121.739369},
   { name: "基隆仁一餐廳（田寮河銀蛇橋前）", address: "基隆市仁愛區劉銘傳路1號" ,lat: 25.126487, lng: 121.749616},
   { name: "基隆深溪餐廳（12/10開幕）", address: "基隆市信義區深溪路156、158號" ,lat: 25.132805, lng: 121.781281},
 { name: "天母中山餐廳（美國學校）", address: "台北市士林區中山北路六段748、750號" ,lat: 25.115654, lng: 121.528296},
@@ -219,113 +223,121 @@
 { name: "花蓮吉安餐廳", address: "花蓮縣吉安鄉中華路二段1號",lat:23.973958, lng:121.587857},
 { name: "花蓮中正餐廳", address: "花蓮縣花蓮市中正路637-1號",lat:23.979738, lng:121.610196},
 { name: "台東新生餐廳", address: "台東縣台東市新生路158號",lat:22.753169, lng:121.147784},
-  ];
-  
-  export default {
-    setup() {
-      const userLocation = ref(null); // 📌 使用者當前位置
-      const nearestKfc = ref(null); // 📌 最近的肯德基店家
-  
-      // 📌 計算兩點距離（Haversine 公式）
-      const getDistance = (lat1, lng1, lat2, lng2) => {
-        const toRad = (value) => (value * Math.PI) / 180;
-        const R = 6371; // 地球半徑 (KM)
-        const dLat = toRad(lat2 - lat1);
-        const dLng = toRad(lng2 - lng1);
-        const a =
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-          Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
-      };
-  
-      // 📌 取得使用者位置
-      const getUserLocation = () => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              userLocation.value = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
-              findNearestKfc();
-            },
-            (error) => {
-              console.error("無法獲取位置：", error);
+    ];
+
+    const getDistance = (lat1, lng1, lat2, lng2) => {
+      const toRad = (value) => (value * Math.PI) / 180;
+      const R = 6371;
+      const dLat = toRad(lat2 - lat1);
+      const dLng = toRad(lng2 - lng1);
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+        Math.sin(dLng / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    };
+
+    const getUserLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            userLocation.value = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            findNearestKfc();
+          },
+          (error) => {
+            console.error("無法獲取位置：", error);
+            if (error.code === error.PERMISSION_DENIED) {
+              alert("請啟用定位權限以獲取最近的肯德基位置。");
             }
-          );
-        } else {
-          console.error("瀏覽器不支援定位");
-        }
-      };
-  
-      // 📌 找出最近的肯德基
-      const findNearestKfc = () => {
-        if (!userLocation.value) return;
-  
-        let minDistance = Infinity;
-        let closestStore = null;
-  
-        kfcStores.forEach((store) => {
-          const distance = getDistance(
-            userLocation.value.lat,
-            userLocation.value.lng,
-            store.lat,
-            store.lng
-          );
-  
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestStore = store;
           }
-        });
-  
-        nearestKfc.value = closestStore;
-      };
-  
-      // 📌 點擊按鈕開啟 Google Maps
-      const openGoogleMaps = () => {
-        if (nearestKfc.value) {
-          const { lat, lng } = nearestKfc.value;
-          window.open(`https://www.google.com/maps?q=${lat},${lng}`, "_blank");
+        );
+      } else {
+        console.error("瀏覽器不支援定位");
+      }
+    };
+
+    const findNearestKfc = () => {
+      if (!userLocation.value) return;
+      let minDistance = Infinity;
+      let closestStore = null;
+
+      kfcStores.forEach((store) => {
+        const distance = getDistance(
+          userLocation.value.lat,
+          userLocation.value.lng,
+          store.lat,
+          store.lng
+        );
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestStore = store;
         }
-      };
-  
-      onMounted(getUserLocation);
-  
-      return { nearestKfc, openGoogleMaps };
-    },
-  };
-  </script>
-  
-  <style scoped>
+      });
+
+      nearestKfc.value = closestStore;
+    };
+
+    const openGoogleMaps = () => {
+      if (nearestKfc.value) {
+        const { name, address } = nearestKfc.value;
+        const query = encodeURIComponent(`${name} ${address}`);
+        window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, "_blank");
+      }
+    };
+
+    onMounted(getUserLocation);
+
+    return { nearestKfc, openGoogleMaps };
+  },
+};
+</script>
+
+<style scoped>
+@media (max-width: 768px) {
   .coupon-map-container {
-  position: absolute; /* 固定位置 */
-  top: 5px; /* 與頂部的距離 */
-  min-width: 300px; /* 限制寬度，避免影響其他內容 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: black; /* 測試用，確認 media query 是否生效 */
+  }
+}
+
+
+
+.coupon-map-container {
+  position: absolute;
+  top: 5px;
+  min-width: 300px;
   max-height: 95px;
   background: white;
   padding: 3px;
   border: 2px solid rgb(172, 172, 172);
   border-radius: 8px;
-  z-index: 1000; /* 確保不會被其他內容蓋住 */
-  margin: auto; /* 讓表單在水平居中 */
+  z-index: 1000;
+  margin: auto;
 }
+
 .header {
   display: flex;
   justify-content: start;
   align-items: center;
-  
 }
-/* 📌 最近的肯德基（紅色 + 粗體） */
+
 .title {
   font-size: 22px;
   font-weight: 900;
   font-family: 'Arial Black', 'Noto Sans TC', sans-serif;
   color: #E4002B;
 }
-
 
 .map-button {
   background-color: red;
@@ -342,24 +354,25 @@
 .map-button:hover {
   background-color: #cc0000;
 }
+
 .map-button:active {
   background-color: #f3a3a3;
 }
-/* 📌 店名 & 地址（紅色 + 加粗） */
+
 .store-info {
   font-size: 15px;
   font-weight: 900;
   font-family: 'Arial Black', 'Noto Sans TC', sans-serif;
   color: #E4002B;
 }
-/* 讓店名與地址同行 */
+
 .details p {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
 }
-/* 📌 「現在就行動」按鈕 */
+
 .action-button {
   background-color: #E4002B;
   color: white;
@@ -374,15 +387,15 @@
   justify-content: space-between;
   transition: background 0.2s ease-in-out;
   position: absolute;
-  right: -200px; /* ✅ 框框右側間距 */
-  top: -3px; /* ✅ 框框右側間距 */
+  right: -200px;
+  top: -3px;
 }
 
 .action-button:hover {
   background-color: #cc0000;
 }
+
 .action-button:active {
   background-color: #f3a3a3;
 }
-  </style>
-  
+</style>

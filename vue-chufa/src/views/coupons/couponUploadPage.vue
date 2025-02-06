@@ -19,6 +19,14 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 768px) {
+  .coupon-upload-page .image-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* 兩欄排列 */
+    gap: 10px !important;
+  }
+}
+
 
 .coupon-upload-page {
   background-color: white;

@@ -57,7 +57,7 @@
     <div v-if="filteredImages.length > 0" class="image-grid">
       <div v-for="(image, index) in filteredImages" :key="index" class="image-item">
         <!-- 拼接圖片 URL -->
-        <img :src="`http://localhost:8080/UploadImages/${image.filename}`" :alt="`圖片 ${index + 1}`" />
+        <img :src="`http://192.168.23.88:8080/UploadImages/${image.filename}`" :alt="`圖片 ${index + 1}`" />
       </div>
     </div>
     <div v-else>
@@ -491,6 +491,18 @@ export default {
 </script>
 
 <style >
+/* 手機版適應 */
+@media (max-width: 768px) {
+  .filter-grid {
+    display: flex !important; /* 強制覆蓋 */
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+    justify-content: center !important;
+    background-color: black; /* 測試用，確認 media query 是否生效 */
+
+  }
+}
+
 .container {
   margin-top: 20px; /* 或 margin-top: 40px; */
   align-items: center; /* 水平置中 */
