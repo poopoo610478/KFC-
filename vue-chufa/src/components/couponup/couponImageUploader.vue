@@ -2,7 +2,7 @@
   <div class="container">
     <!-- 顯示當前時間 -->
     <!-- 篩選按鈕 -->
-
+    <div class="filter-group">
     <button @click="toggleFriedChickenFilter" :class="['filter-btn', { 'active-btn': isFriedChickenActive }]">炸雞</button>
     <button @click="toggleFriesFilter" :class="['filter-btn', { 'active-btn': isFriesActive }]">薯條</button>
     <button @click="toggleEggTartFilter" :class="['filter-btn', { 'active-btn': isEggTartActive }]">蛋撻</button>
@@ -16,8 +16,10 @@
     <button @click="toggleFishDonutFilter" :class="['filter-btn', { 'active-btn': isFishDonutActive }]">鱈魚圈</button>
     <button @click="toggleShrimpNuggetFilter" :class="['filter-btn', { 'active-btn': isShrimpNuggetActive }]">超蝦塊</button>
     <button @click="toggleBreakfastFilter" :class="['filter-btn', { 'active-btn': isBreakfastActive }]">吃早餐</button>
+  </div>
 <br>
     <!-- 第二排篩選按鈕 -->
+    <div class="exclude-group">
    <button @click="toggleNoFriedChickenFilter" :class="['exclude-btn', { 'passive-btn': isFriedChickenPassive }]">不要炸雞</button>
    <button @click="toggleNoFriesFilter" :class="['exclude-btn', { 'passive-btn': isFriesPassive }]">不要薯條</button>
    <button @click="toggleNoEggTartFilter" :class="['exclude-btn', { 'passive-btn': isEggTartPassive }]">不要蛋撻</button>
@@ -31,6 +33,7 @@
    <button @click="toggleNoFishDonutFilter" :class="['exclude-btn', { 'passive-btn': isFishDonutPassive }]">不要鱈魚圈</button>
    <button @click="toggleNoShrimpNuggetFilter" :class="['exclude-btn', { 'passive-btn': isShrimpNuggetPassive }]">不要超蝦塊</button>
    <button @click="toggleNoBreakfastFilter" :class="['exclude-btn', { 'passive-btn': isBreakfastPassive }]">排除早餐</button>
+  </div>
    <!-- 排序選單 -->
    <div class="sort-controls">
       <label>排序依據：</label>
@@ -490,16 +493,54 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
 /* 手機版適應 */
 @media (max-width: 768px) {
-  .filter-grid {
-    display: flex !important; /* 強制覆蓋 */
-    flex-wrap: wrap !important;
-    gap: 5px !important;
-    justify-content: center !important;
-    background-color: black; /* 測試用，確認 media query 是否生效 */
+  .container {
+    z-index: 1000;
+    max-width: 100vw; /* 限制最大寬度 */
+  overflow-x: hidden;
+  margin-left: unset !important;
+  margin-right: unset !important;
+  margin-top: unset !important; /* 或 margin-top: 40px; */
+  max-width: 90vw !important; /* 避免超過畫面 */
+}
 
+
+  .filter-group, .exclude-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: space-between;
+  }
+
+  .filter-btn, .exclude-btn {
+    width: 48%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+
+  }
+
+  .image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px; /* 📌 讓圖片間隔變小 */
+    justify-content: center;
+    width: 100%; /* 🔥 讓圖片區塊與紅色框框對齊 */
+    min-width: unset !important;
+  }
+
+  .image-item {
+    width: 100%; /* 🔥 兩張一排 */
+    max-width: 150px; /* 📌 限制最大寬度 */
+  }
+
+  .image-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    max-width: unset !important;
   }
 }
 

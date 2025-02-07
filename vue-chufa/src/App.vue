@@ -41,6 +41,13 @@ export default {
 </script>
 
 <style scoped>
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+
 body {
   background-color: #FBF8F6;
   margin: 0;
