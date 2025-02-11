@@ -10,7 +10,7 @@ export const useCouponStore = defineStore("couponStore", {
     // 獲取所有優惠券
     async fetchCoupons() {
       try {
-        const response = await fetch("http://192.168.23.88:8080/api/coupons/all");
+        const response = await fetch("/coupons/all");
         if (response.ok) {
           this.coupons = await response.json();
         } else {

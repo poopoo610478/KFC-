@@ -542,6 +542,12 @@ export default {
     border-radius: 8px;
     max-width: unset !important;
   }
+
+  .sort-controls {
+    color: #000 !important; /* 強制字體顏色為純黑 */
+    font-weight: bold !important; /* 讓字體變粗 */
+    opacity: 1 !important; /* 移除透明度 */
+  }
 }
 
 .container {

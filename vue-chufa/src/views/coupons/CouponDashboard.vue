@@ -1,8 +1,11 @@
 <template>
   <div class="dashboard">
+    <div class="title1">KFC-COUPON輸入端</div>
     <CouponForm @refresh="fetchCoupons" />
     <CouponTable :coupons="coupons" @edit="editCoupon" />
+    
   </div>
+  
 </template>
 
 <script>
@@ -37,6 +40,13 @@ export default {
 .dashboard{
   margin: auto; /* 讓表單在水平居中 */
   margin-left: 8%;
+}
+
+.title1 {
+    text-align: center;   /* 文字置中 */
+    font-size: 36px;      /* 調整字體大小 */
+    font-weight: bold;    /* 加粗（可選） */
+    color: #E4002B;       /* 文字顏色（可選） */
 }
 
 </style>
