@@ -1,16 +1,12 @@
 package com.ispan.chufa.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,12 +19,6 @@ public class CouponBean {
 
     @Column(name = "coupon_code")
     private String couponCode; // 優惠券代碼，要求唯一且不能為空
-
-    @Column(name = "TimesOfUse")
-    private Integer TimesOfUse; // 庫存 為數字
-    
-    @Column(name = "remaining")
-    private Integer remaining; // 庫存 為數字
 
     @Column(name = "price")
     private Integer price; // 庫存 為數字
@@ -119,13 +109,6 @@ public class CouponBean {
     @Column(name = "YilanJiaoxi")//宜蘭礁溪
     private Boolean YilanJiaoxi;
 
-    @ManyToMany(mappedBy = "couponBean")
-    private List<MyCouponBean> myCoupons;
-
-    @ManyToOne
-    @JoinColumn(name = "placeId")
-    private PlaceBean place;
-
     // Getters and Setters
     public Long getCouponId() {
         return couponId;
@@ -141,14 +124,6 @@ public class CouponBean {
 
     public void setCouponCode(String couponCode) {
         this.couponCode = couponCode;
-    }
-
-    public Integer getTimesOfUse() {
-        return TimesOfUse;
-    }
-
-    public void setTimesOfUse(Integer TimesOfUse) {
-        this.TimesOfUse = TimesOfUse;
     }
 
     public Integer getPrice() {
@@ -385,19 +360,4 @@ public class CouponBean {
         this.YilanJiaoxi = YilanJiaoxi;
     }
 
-    public List<MyCouponBean> getMyCoupons() {
-        return myCoupons;
-    }
-
-    public void setMyCoupons(List<MyCouponBean> myCoupons) {
-        this.myCoupons = myCoupons;
-    }
-
-    public PlaceBean getPlace() {
-        return place;
-    }
-
-    public void setPlace(PlaceBean place) {
-        this.place = place;
-    }
 }

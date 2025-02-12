@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.ispan.chufa.domain.CouponBean;
 import com.ispan.chufa.repository.CouponRepository;
-import com.ispan.chufa.repository.MyCouponRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -31,18 +30,13 @@ public class CouponService {
         return couponRepository.findAll(); // 查詢所有優惠券
     }
 
-    @Autowired
-    private MyCouponRepository myCouponRepository;
-
     @Transactional
     public void deleteCoupon(Long couponId) {
         // 取得優惠券資料
         Optional<CouponBean> couponOpt = couponRepository.findById(couponId);
         
         if (couponOpt.isPresent()) {
-            CouponBean coupon = couponOpt.get();
             // 先刪除所有與該優惠券相關的使用者優惠券資料
-            myCouponRepository.deleteByCouponBean(coupon);
 
             // 刪除優惠券資料
             couponRepository.deleteById(couponId);
@@ -136,7 +130,6 @@ public class CouponService {
               CouponBean Coupon = new CouponBean();
 
            // 映射欄位值
-              Coupon.setTimesOfUse(safeParseInteger(getField(fields, fieldIndex.get("TimesOfUse"))));
               Coupon.setCouponCode(getField(fields, fieldIndex.get("couponCode")));
               Coupon.setTitle(getField(fields, fieldIndex.get("title")));
               Coupon.setContent(getField(fields, fieldIndex.get("content")));
