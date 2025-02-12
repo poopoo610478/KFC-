@@ -24,7 +24,7 @@ import com.ispan.chufa.service.CouponService;
 @RequestMapping("/api/coupons")
 public class ControllerRouter {
 
-    private static final String UPLOAD_DIR = "C:\\JavaFramework\\sts-workspace\\CouponKFC\\proj-chufa\\src\\main\\resources\\static\\UploadImages";
+    private static final String UPLOAD_DIR = "C:\\JavaFramework\\sts-workspace\\KFC-\\proj-chufa\\src\\main\\resources\\static\\UploadImages";
 
     @Autowired
     private CouponService couponService;
@@ -198,7 +198,7 @@ public ResponseEntity<?> fetchAllImages() {
         List<CouponBean> coupons = couponService.getAllCoupons();
 
         // 獲取靜態目錄中所有圖片檔案
-        File directory = new File("C:/JavaFramework/sts-workspace/CouponKFC/proj-chufa/src/main/resources/static/UploadImages");
+        File directory = new File("C:/JavaFramework/sts-workspace/KFC-/proj-chufa/src/main/resources/static/UploadImages");
         if (!directory.exists() || !directory.isDirectory()) {
             return ResponseEntity.badRequest().body("圖片目錄不存在！");
         }
