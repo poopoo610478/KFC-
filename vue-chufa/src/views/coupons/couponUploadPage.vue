@@ -19,6 +19,22 @@ export default {
 </script>
 
 <style scoped>
+/* 手機版排版 */
+@media (max-width: 768px) {
+  .coupon-upload-page {
+    padding: 10px;
+    background-color: white;
+    width: 100% !important; /* 🔥 修正寬度適應手機 */
+    min-width: 350px !important; /* ❌ 移除 min-width: 900px 避免手機顯示異常 */
+    max-width: 100vw !important; /* 避免超出畫面 */
+    margin-left: auto !important; /* 📌 置中 */
+    overflow-x: hidden !important;
+    margin-left: -30px !important;
+    margin-right: 50px !important;
+    margin-top: 110px !important; /* 依照你的需求調整數值 */
+    max-width: 90vw !important; /* 避免超過畫面 */
+  }
+}
 
 .coupon-upload-page {
   background-color: white;

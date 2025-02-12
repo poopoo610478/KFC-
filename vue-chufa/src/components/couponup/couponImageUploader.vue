@@ -490,7 +490,63 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
+/* 手機版適應 */
+@media (max-width: 768px) {
+  .container {
+    z-index: 1000;
+    max-width: 100vw; /* 限制最大寬度 */
+  overflow-x: hidden;
+  margin-left: unset !important;
+  margin-right: unset !important;
+  margin-top: unset !important; /* 或 margin-top: 40px; */
+  max-width: 90vw !important; /* 避免超過畫面 */
+}
+
+
+  .filter-group, .exclude-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: space-between;
+  }
+
+  .filter-btn, .exclude-btn {
+    width: 48%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+
+  }
+
+  .image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px; /* 📌 讓圖片間隔變小 */
+    justify-content: center;
+    width: 100%; /* 🔥 讓圖片區塊與紅色框框對齊 */
+    min-width: unset !important;
+  }
+
+  .image-item {
+    width: 100%; /* 🔥 兩張一排 */
+    max-width: 150px; /* 📌 限制最大寬度 */
+  }
+
+  .image-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    max-width: unset !important;
+  }
+
+  .sort-controls {
+    color: #000 !important; /* 強制字體顏色為純黑 */
+    font-weight: bold !important; /* 讓字體變粗 */
+    opacity: 1 !important; /* 移除透明度 */
+  }
+}
+
 .container {
   margin-top: 20px; /* 或 margin-top: 40px; */
   align-items: center; /* 水平置中 */

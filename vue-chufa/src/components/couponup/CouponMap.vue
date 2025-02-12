@@ -300,6 +300,44 @@
   </script>
   
   <style scoped>
+/* 手機版調整 */
+@media (max-width: 768px) {
+  .coupon-map-container {
+    margin: 0 auto !important; /* 讓它置中 */
+    max-width: 90vw !important; /* 避免超過畫面 */
+    text-align: center !important; /* 📌 讓內容置中 */
+    padding: 10px;
+    background: #fff; /* ✅ 確保背景是白色 */
+    border: 1px solid #ccc; /* ✅ 加上邊框，避免手機版缺少邊框 */
+    border-radius: 8px; /* ✅ 圓角美化 */
+    margin-right: 60px !important;
+    margin-left: -10px !important;
+  }
+
+  .map-btn, .action-btn {
+    display: block; /* ✅ 讓按鈕佔一整行 */
+    width: 100%; /* ✅ 讓按鈕填滿父容器 */
+    margin: 5px 0; /* ✅ 增加按鈕間距 */
+    padding: 10px; /* ✅ 增加內距 */
+    background-color: #E4002B; /* ✅ 設定按鈕顏色 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .action-button {
+    display: block !important;
+    width: 100% !important; /* 🔥 讓按鈕自適應手機螢幕 */
+    text-align: center;
+    max-width: 250px; /* ✅ 限制最大寬度，避免影響其他元素 */
+    margin: 13px auto !important; /* 📌 讓按鈕置中 */
+    position: relative; /* ❌ 取消 absolute 避免它跑到畫面外 */
+    right:  auto !important;
+    top: 80px !important;
+    text-align: center !important;
+  }
+}
+
   .coupon-map-container {
   position: absolute; /* 固定位置 */
   top: 5px; /* 與頂部的距離 */

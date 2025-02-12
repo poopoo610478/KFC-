@@ -6,8 +6,6 @@ import { useRoute } from 'vue-router';
 <template>
   <!-- 根據路由條件渲染 -->
   <header v-if="isHome">
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
 
