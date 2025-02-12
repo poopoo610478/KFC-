@@ -4,12 +4,6 @@ const routes = [
       name: 'upload',
       component: () => import('../views/coupons/couponUploadPage.vue'), // 動態加載組件
     },
-  
-  {
-    path: "/search",
-    name: "search",
-    component: () => import("../views/coupons/SearchPage.vue"), // 指向正確文件路徑
-  },
   {
     path: '/coupons',
     name: 'CouponDashboard',
