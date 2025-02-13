@@ -36,6 +36,10 @@ spring:
     basename: messages
     encoding: UTF-8
     
+jwt:
+  token:
+    expire: 10
+
 server:
   address: 0.0.0.0
   port: 8080
