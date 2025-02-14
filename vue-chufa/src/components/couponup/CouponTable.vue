@@ -23,7 +23,7 @@
         <td>{{ coupon.content }}</td>
         <td>{{ coupon.state ? "有效" : "無效" }}</td>
         <td>
-          <a :href="'http://localhost:8080' + coupon.picture" target="_blank">
+          <a :href="'https://tiny-poems-boil.loca.lt' + coupon.picture" target="_blank">
             查看圖片
           </a>
         </td>

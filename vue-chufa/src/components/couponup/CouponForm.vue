@@ -197,7 +197,7 @@ export default {
       }
 
       try {
-        const response = await fetch("http://192.168.50.90:8080/api/coupons/Coupon", {
+        const response = await fetch("https://7035-36-226-157-199.ngrok-free.app/api/coupons/Coupon", {
           method: "POST",
           body: formData,
         });
@@ -255,7 +255,7 @@ export default {
     // 確保 couponId 是 Long 類型
     const id = Number(coupon.value.couponId);
 
-    const response = await fetch(`http://192.168.50.90:8080/api/coupons/update/${id}`, {
+    const response = await fetch(`https://tiny-poems-boil.loca.lt/api/coupons/update/${id}`, {
       method: "PUT",
       body: formData,
     });
@@ -276,7 +276,7 @@ export default {
         return;
       }
       try {
-        const response = await fetch(`http://192.168.50.90:8080/api/coupons/delete/${coupon.value.couponId}`, {
+        const response = await fetch(`https://tiny-poems-boil.loca.lt/api/coupons/delete/${coupon.value.couponId}`, {
           method: "DELETE",
         });
         if (response.ok) {
@@ -297,7 +297,7 @@ export default {
           couponCode: coupon.value.couponCode, // ✅ 直接帶入篩選條件
         };
 
-        const response = await fetch("http://192.168.50.90:8080/api/coupons/search", {
+        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(query),
@@ -390,7 +390,7 @@ export default {
       coupon.value.PingTungDongGang = selectedCoupon.PingTungDonggang ?? true;
       coupon.value.startTime = selectedCoupon.startTime || "";
       coupon.value.endTime = selectedCoupon.endTime || "";
-      coupon.value.pictureUrl = selectedCoupon.picture ? `http://localhost:8080${selectedCoupon.picture}` : null; // 設置圖片URL
+      coupon.value.pictureUrl = selectedCoupon.picture ? `https://tiny-poems-boil.loca.lt${selectedCoupon.picture}` : null; // 設置圖片URL
     };
     return {
       coupon,

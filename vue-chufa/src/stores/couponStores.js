@@ -10,7 +10,7 @@ export const useCouponStore = defineStore("couponStore", {
     // 獲取所有優惠券
     async fetchCoupons() {
       try {
-        const response = await fetch("http://192.168.50.90:8080/api/coupons/all");
+        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/all");
         if (response.ok) {
           this.coupons = await response.json();
         } else {
@@ -27,7 +27,7 @@ export const useCouponStore = defineStore("couponStore", {
         for (const key in coupon) {
           formData.append(key, coupon[key]);
         }
-        const response = await fetch("http://192.168.50.90:8080/api/coupons/Coupon", {
+        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/Coupon", {
           method: "POST",
           body: formData,
         });
@@ -48,7 +48,7 @@ export const useCouponStore = defineStore("couponStore", {
           formData.append(key, coupon[key]);
         }
         const response = await fetch(
-          `http://192.168.50.90:8080/api/coupons/update/${coupon.value.couponId}`,
+          `https://tiny-poems-boil.loca.lt/api/coupons/update/${coupon.value.couponId}`,
           {
             method: "PUT",
             body: formData,
@@ -67,7 +67,7 @@ export const useCouponStore = defineStore("couponStore", {
     async deleteCoupon(id) {
       try {
         const response = await fetch(
-          `http://192.168.50.90:8080/api/coupons/delete/${id}`,
+          `https://tiny-poems-boil.loca.lt/api/coupons/delete/${id}`,
           {
             method: "DELETE",
           }
@@ -84,7 +84,7 @@ export const useCouponStore = defineStore("couponStore", {
 //查詢優惠券
     async searchCoupons(param) {
       try {
-        const response = await fetch("http://192.168.50.90:8080/api/coupons/search", {
+        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -118,7 +118,7 @@ export const useCouponStore = defineStore("couponStore", {
     // 獲取圖片路徑
     async fetchAllImages() {
       try {
-        const response = await fetch("http://192.168.50.90:8080/api/coupons/images/all", {
+        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/images/all", {
           method: "GET", // 確保是 GET 方法
         });
         if (response.ok) {

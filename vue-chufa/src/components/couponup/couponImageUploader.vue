@@ -57,7 +57,7 @@
     <div v-if="filteredImages.length > 0" class="image-grid">
       <div v-for="(image, index) in filteredImages" :key="index" class="image-item">
         <!-- 拼接圖片 URL -->
-        <img :src="`http://localhost:8080/UploadImages/${image.filename}`" :alt="`圖片 ${index + 1}`" />
+        <img :src="`${BASE_API}/UploadImages/${image.filename}`" :alt="`圖片 ${index + 1}`" />
       </div>
     </div>
     <div v-else>
@@ -74,7 +74,7 @@ export default {
   name: "CouponImageUploader",
   setup() {
     const couponStore = useCouponStore(); //重點2
-    
+    const BASE_API = "https://tiny-poems-boil.loca.lt"
     
     const isFriedChickenPassive = ref(false);
     const isFriesPassive = ref(false);
@@ -421,6 +421,7 @@ export default {
     });
     return {
       filteredImages,
+      BASE_API,
 
       autoFilterBtn,
       updateFilteredImages,
