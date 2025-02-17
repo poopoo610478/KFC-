@@ -43,7 +43,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
         registry.addMapping("/**")
-        .allowedOrigins("https://odd-clowns-fold.loca.lt") // 允許前端的 IP
+        .allowedOrigins("https://dull-clowns-bake.loca.lt") // 允許前端的 IP
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允許的 HTTP 方法
         .allowedHeaders("*") // 允許所有 Header
         .allowCredentials(true); // 允許攜帶憑證 (如 Cookie)

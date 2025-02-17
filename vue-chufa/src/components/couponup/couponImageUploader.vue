@@ -74,7 +74,7 @@ export default {
   name: "CouponImageUploader",
   setup() {
     const couponStore = useCouponStore(); //重點2
-    const BASE_API = "https://tiny-poems-boil.loca.lt"
+    const BASE_API = import.meta.env.VITE_BASE_API;
     
     const isFriedChickenPassive = ref(false);
     const isFriesPassive = ref(false);

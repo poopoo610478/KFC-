@@ -1,5 +1,11 @@
 import { defineStore } from "pinia";
 
+// ✅ 透過 `import.meta.env` 讀取 `.env` 內的 `VITE_BASE_API`
+const BASE_API = import.meta.env.VITE_BASE_API;
+
+// ✅ 確保變數有正確讀取
+console.log("🔹 Current BASE_API:", BASE_API);
+
 export const useCouponStore = defineStore("couponStore", {
   state: () => ({
     coupons: [], // 儲存優惠券資料
@@ -10,7 +16,8 @@ export const useCouponStore = defineStore("couponStore", {
     // 獲取所有優惠券
     async fetchCoupons() {
       try {
-        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/all");
+        console.log(`📌 發送 GET 請求至: ${BASE_API}/api/coupons/all`);
+        const response = await fetch(`${BASE_API}/api/coupons/all`);
         if (response.ok) {
           this.coupons = await response.json();
         } else {
@@ -27,7 +34,8 @@ export const useCouponStore = defineStore("couponStore", {
         for (const key in coupon) {
           formData.append(key, coupon[key]);
         }
-        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/Coupon", {
+        console.log(`📌 發送 POST 請求至: ${BASE_API}/api/coupons/Coupon`);
+        const response = await fetch(`${BASE_API}/api/coupons/Coupon`, {
           method: "POST",
           body: formData,
         });
@@ -47,8 +55,8 @@ export const useCouponStore = defineStore("couponStore", {
         for (const key in coupon) {
           formData.append(key, coupon[key]);
         }
-        const response = await fetch(
-          `https://tiny-poems-boil.loca.lt/api/coupons/update/${coupon.value.couponId}`,
+        console.log(`📌 發送 PUT 請求至: ${BASE_API}/api/coupons/update/${coupon.value.couponId}`);
+        const response = await fetch(`${BASE_API}/api/coupons/update/${coupon.value.couponId}`,
           {
             method: "PUT",
             body: formData,
@@ -66,8 +74,8 @@ export const useCouponStore = defineStore("couponStore", {
     // 刪除優惠券
     async deleteCoupon(id) {
       try {
-        const response = await fetch(
-          `https://tiny-poems-boil.loca.lt/api/coupons/delete/${id}`,
+        console.log(`📌 發送 DELETE 請求至: ${BASE_API}/api/coupons/delete/${id}`);
+        const response = await fetch(`${BASE_API}/api/coupons/delete/${id}`,
           {
             method: "DELETE",
           }
@@ -84,7 +92,8 @@ export const useCouponStore = defineStore("couponStore", {
 //查詢優惠券
     async searchCoupons(param) {
       try {
-        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/search", {
+        console.log(`📌 發送 POST 查詢請求至: ${BASE_API}/api/coupons/search`);
+        const response = await fetch(`${BASE_API}/api/coupons/search`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -118,7 +127,8 @@ export const useCouponStore = defineStore("couponStore", {
     // 獲取圖片路徑
     async fetchAllImages() {
       try {
-        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/images/all", {
+        console.log(`📌 發送 GET 請求至: ${BASE_API}/api/coupons/images/all`);
+        const response = await fetch(`${BASE_API}/api/coupons/images/all`, {
           method: "GET", // 確保是 GET 方法
         });
         if (response.ok) {
@@ -133,3 +143,6 @@ export const useCouponStore = defineStore("couponStore", {
     },
   },
 });
+
+// ✅ 確保 `BASE_API` 可供外部調用
+export { BASE_API };

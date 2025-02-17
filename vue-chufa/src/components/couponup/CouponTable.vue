@@ -23,7 +23,7 @@
         <td>{{ coupon.content }}</td>
         <td>{{ coupon.state ? "有效" : "無效" }}</td>
         <td>
-          <a :href="'https://tiny-poems-boil.loca.lt' + coupon.picture" target="_blank">
+          <a :href="`${BASE_API}${coupon.picture}`" target="_blank">
             查看圖片
           </a>
         </td>
@@ -40,6 +40,17 @@
 <script>
 export default {
   props: ["coupons"],
+  setup() {
+    // ✅ 透過 `import.meta.env` 讀取 `.env` 內的 `VITE_BASE_API`
+    const BASE_API = import.meta.env.VITE_BASE_API;
+
+    // ✅ 確保變數有正確讀取
+    console.log("Current BASE_API:", BASE_API);
+
+    return {
+      BASE_API, // ✅ 讓 `template` 內可以使用 `BASE_API`
+    };
+  },
 };
 </script>
 <style scoped>

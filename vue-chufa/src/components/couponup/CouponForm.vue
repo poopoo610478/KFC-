@@ -111,6 +111,11 @@ export default {
   components: { CouponTable },
   setup() {
     const message = ref("");
+// ✅ 透過 `import.meta.env` 讀取 `.env` 內的 `VITE_BASE_API`
+    const BASE_API = import.meta.env.VITE_BASE_API;
+    // ✅ 確保變數有正確讀取
+    console.log("Current BASE_API:", BASE_API);
+
     const showMealSection = ref(false); // 控制餐點區塊顯示
     const showrestaurant = ref(false); // 控制餐廳區塊顯示
     const couponStore = useCouponStore();
@@ -197,7 +202,8 @@ export default {
       }
 
       try {
-        const response = await fetch("https://7035-36-226-157-199.ngrok-free.app/api/coupons/Coupon", {
+        console.log("📌 發送新增請求至:", `${BASE_API}/api/coupons/Coupon`);
+        const response = await fetch(`${BASE_API}/api/coupons/Coupon`, {
           method: "POST",
           body: formData,
         });
@@ -255,7 +261,7 @@ export default {
     // 確保 couponId 是 Long 類型
     const id = Number(coupon.value.couponId);
 
-    const response = await fetch(`https://tiny-poems-boil.loca.lt/api/coupons/update/${id}`, {
+    const response = await fetch(`${BASE_API}/api/coupons/update/${id}`, {
       method: "PUT",
       body: formData,
     });
@@ -276,7 +282,7 @@ export default {
         return;
       }
       try {
-        const response = await fetch(`https://tiny-poems-boil.loca.lt/api/coupons/delete/${coupon.value.couponId}`, {
+        const response = await fetch(`${BASE_API}/api/coupons/delete/${coupon.value.couponId}`, {
           method: "DELETE",
         });
         if (response.ok) {
@@ -296,8 +302,8 @@ export default {
           title: coupon.value.title,
           couponCode: coupon.value.couponCode, // ✅ 直接帶入篩選條件
         };
-
-        const response = await fetch("https://tiny-poems-boil.loca.lt/api/coupons/search", {
+        console.log("📌 發送查詢請求至:", `${BASE_API}/api/coupons/search`);
+        const response = await fetch(`${BASE_API}/api/coupons/search`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(query),
@@ -390,9 +396,11 @@ export default {
       coupon.value.PingTungDongGang = selectedCoupon.PingTungDonggang ?? true;
       coupon.value.startTime = selectedCoupon.startTime || "";
       coupon.value.endTime = selectedCoupon.endTime || "";
-      coupon.value.pictureUrl = selectedCoupon.picture ? `https://tiny-poems-boil.loca.lt${selectedCoupon.picture}` : null; // 設置圖片URL
+      coupon.value.pictureUrl = selectedCoupon.picture ? `${BASE_API}${selectedCoupon.picture}` : null; // 設置圖片URL
     };
     return {
+      BASE_API, // ✅ 確保變數可用於 `template`
+
       coupon,
       message,
       addCoupon,
