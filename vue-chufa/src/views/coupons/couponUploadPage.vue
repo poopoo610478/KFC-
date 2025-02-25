@@ -4,16 +4,34 @@
     <CouponImageUploader />
     <CouponMap /> <!-- 插入 CouponMap.vue，顯示最近的肯德基 -->
   </div>
+  <div class="qrcode-container">
+    <h2>掃描 QR Code 進入網站</h2>
+    <qrcode-vue :value="siteUrl" :size="200" level="H" />
+  </div>
+  <div>
+  <h1>參考資料來源，肯德基相關優惠券</h1>
+  <h2>此內容僅供訓練用，若有版權問題請聯繫王銘竹
+   0928294622
+coastm52862@gmail.com
+</h2>
+  </div>
 </template>
 
 <script>
 import CouponImageUploader from "@/components/couponup/couponImageUploader.vue";
 import CouponMap from "@/components/couponup/CouponMap.vue"; // 📌 引入元件
+import QrcodeVue from 'qrcode.vue';
 export default {
   name: "CouponUploadPage",
   components: {
     CouponImageUploader,
     CouponMap, // 📌 註冊元件
+    QrcodeVue,
+  },
+  data() {
+    return {
+      siteUrl: "https://rich-things-crash.loca.lt/couponUploadPage/upload",
+    };
   },
 };
 </script>
@@ -36,6 +54,10 @@ export default {
   }
 }
 
+.qrcode-container {
+  text-align: center;
+  margin-top: 20px;
+}
 .coupon-upload-page {
   background-color: white;
   margin-top: 45px; /* 或 margin-top: 40px; */
